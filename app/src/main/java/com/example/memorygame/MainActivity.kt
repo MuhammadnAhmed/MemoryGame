@@ -83,10 +83,13 @@ class MainActivity : AppCompatActivity() {
                 showNewSizeDialogue()
                 return true
             }
-            R.id.mi_custom_game->{
-                showCreationDialogue()
-
+            R.id.mi_exit->{
+                System.exit(0)
             }
+//            R.id.mi_custom_game->{
+//                showCreationDialogue()
+//
+//            }
 
         }
         return super.onOptionsItemSelected(item)

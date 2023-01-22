@@ -20,6 +20,7 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -180,10 +181,33 @@ class CreateActivity : AppCompatActivity() {
                     uploadedImageUrls.add(downloadUrl)
                     Log.e(TAG, "Finish Uploading $photoUri, num uploaded ${uploadedImageUrls.size}")
                     if (uploadedImageUrls.size == chosenImageUris.size){
-                        //handleAllImagesUploaded(customGameName, uploadedImageUrls)
+                        handleAllImagesUploaded(customGameName, uploadedImageUrls)
                     }
                 }
         }
+    }
+
+    private fun handleAllImagesUploaded(gameName: String, imageUrls: MutableList<String>) {
+        db.collection("games").document(gameName)
+            .set(mapOf("images" to imageUrls))
+            .addOnCompleteListener{ gameCreationTask ->
+                if (!gameCreationTask.isSuccessful){
+                    Log.i(TAG, "Game Creation Failed", gameCreationTask.exception)
+                    Toast.makeText(this,"Game Creation Failed, Please try again later",Toast.LENGTH_LONG).show()
+                    return@addOnCompleteListener
+                }
+                Log.i(TAG, "Game $gameName Created successfully ", gameCreationTask.exception)
+                AlertDialog.Builder(this)
+                    .setTitle("Let's play your game now!")
+                    .setPositiveButton("OK"){ _, _ ->
+                        val resultData = Intent()
+                        resultData.putExtra("GAME_NAME_EXTRA", gameName)
+                        setResult(Activity.RESULT_OK, resultData)
+                        finish()
+                    }.show()
+
+            }
+
     }
 
     private fun getImageByteArray(photoUri: Uri): ByteArray {

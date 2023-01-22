@@ -11,7 +11,10 @@
         android:id="@+id/mi_new_size"
         android:title="Choose new size" />
     <item
-        android:id="@+id/mi_custom_game"
-        android:title="Create Custom Game"
-        app:showAsAction="never" />
+        android:id="@+id/mi_exit"
+        android:title="Exit" />
+<!--    <item-->
+<!--        android:id="@+id/mi_custom_game"-->
+<!--        android:title="Create Custom Game"-->
+<!--        app:showAsAction="never" />-->
 </menu>
