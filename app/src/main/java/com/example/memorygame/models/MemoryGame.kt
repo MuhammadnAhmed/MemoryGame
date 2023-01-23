@@ -28,7 +28,7 @@ class MemoryGame (private val boardSize: BoardSize){
             indexOfSingleSelectedCard = position
         } else{
             // only one card flipped over
-            foundMatch = checkForMatch(indexOfSingleSelectedCard!! , position)
+            foundMatch = checkForMatch(indexOfSingleSelectedCard!!, position)
             indexOfSingleSelectedCard = null
             }
         // Will change the position

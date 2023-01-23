@@ -4,6 +4,8 @@ import android.animation.ArgbEvaluator
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Color.green
 import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +20,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memorygame.models.BoardSize
@@ -25,6 +30,7 @@ import com.example.memorygame.models.MemoryCard
 import com.example.memorygame.models.MemoryGame
 import com.example.memorygame.utils.DEFAULT_ICONS
 import com.example.memorygame.utils.EXTRA_BOARD_SIZE
+import com.github.jinatonic.confetti.CommonConfetti
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -47,17 +53,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         movesText = findViewById(R.id.textMoves)
         pairsText = findViewById(R.id.textPairs)
         rvBoard = findViewById(R.id.rvBoard)
         clRoot = findViewById(R.id.clRoot)
+
 
 //        val intent = Intent(this, CreateActivity::class.java)
 //        intent.putExtra(EXTRA_BOARD_SIZE, BoardSize.MEDIUM)
 //        startActivity(intent)
 
         setupBoard()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,6 +75,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.mi_refresh->{
+
                 // Setup the game again
                 if (memoryGame.getNumMoves() > 0 && !memoryGame.haveWon()){
                     showAlertDialogue("Do you want to quit your game?", null, View.OnClickListener {
@@ -143,6 +151,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupBoard() {
         when(boardSize){
             BoardSize.EASY -> {
+
                 movesText.text = "Easy 4 x 2"
                 pairsText.text = "Pairs: 0/4"
             }
@@ -164,6 +173,7 @@ class MainActivity : AppCompatActivity() {
         rvBoard.adapter = adapter
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
+
     }
 
     private fun updateGameWithFlip(position: Int) {
@@ -190,6 +200,7 @@ class MainActivity : AppCompatActivity() {
             pairsText.text = "Pairs: ${memoryGame.numPairsFound} / ${boardSize.numPairs()}"
             if (memoryGame.numPairsFound == boardSize.numPairs()){
             Snackbar.make(clRoot, "You Won!", Snackbar.LENGTH_LONG).show()
+            CommonConfetti.rainingConfetti(clRoot, intArrayOf(Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED)).oneShot()
             }
         }
         movesText.text = "Moves: ${memoryGame.getNumMoves()}"

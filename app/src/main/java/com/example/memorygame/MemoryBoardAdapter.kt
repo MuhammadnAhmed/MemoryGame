@@ -61,12 +61,12 @@ class MemoryBoardAdapter(
         fun bind(position: Int) {
             // nothing now
             val memoryCard = cards[position]
-            imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background)
+            imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_question_mark)
             imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f
             val colorStateList = if (memoryCard.isMatched) ContextCompat.getColorStateList(context, R.color.color_grey) else null
             ViewCompat.setBackgroundTintList(imageButton, colorStateList)
             imageButton.setOnClickListener{
-                Log.i(Tag, "yoyo $position")
+                Log.i(Tag, "clicked $position")
                 cardClickListener.onCardClick(position)
             }
 
